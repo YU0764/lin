@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -17,26 +16,30 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0a;font-family:
 .splash-line{width:32px;height:0.5px;background:rgba(255,255,255,0.25);margin:28px auto}
 .splash-desc{color:rgba(255,255,255,0.35);font-size:13px;letter-spacing:1px;font-weight:300}
 .enter-btn{position:fixed;bottom:44px;right:36px;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;z-index:10000}
-.enter-btn:active{transform:scale(0.93);background:rgba(255,255,255,0.12)}
+.enter-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.35)}
+.enter-btn:active{transform:scale(0.93);background:rgba(255,255,255,0.15)}
 .enter-btn svg{width:20px;height:20px;stroke:rgba(255,255,255,0.75);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .enter-btn-pulse{position:fixed;bottom:44px;right:36px;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);z-index:9998;animation:pulse 2.4s ease-out infinite}
 @keyframes pulse{0%{transform:scale(1);opacity:0.6}100%{transform:scale(1.7);opacity:0}}
 
 #main{position:fixed;inset:0;opacity:0;pointer-events:none;transition:opacity 0.8s cubic-bezier(0.4,0,0.2,1)}
 #main.in{opacity:1;pointer-events:auto}
-#canvas{width:100%;height:100%;position:relative;overflow:hidden}
+#canvas{width:100%;height:100%;position:relative;overflow:hidden;cursor:grab}
+#canvas:active{cursor:grabbing}
 #hint{position:fixed;top:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.45);font-size:12px;font-weight:400;letter-spacing:0.5px;pointer-events:none;z-index:100;white-space:nowrap;transition:opacity 0.4s;padding:6px 14px;background:rgba(0,0,0,0.3);border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .frame{position:absolute;border-radius:12px;overflow:hidden;cursor:pointer;transition:filter 0.5s,opacity 0.5s,box-shadow 0.5s,border 0.5s;will-change:transform}
-.frame img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none}
+.frame img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;-webkit-user-select:none}
 .frame-inner{position:relative;width:100%;height:100%}
 .eye-zone,.ear-zone{position:absolute;cursor:pointer;z-index:10;border-radius:50%}
 .ripple-overlay{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;pointer-events:none;border-radius:12px;z-index:5;background-size:cover;background-position:center}
-#back-btn{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:13px;font-weight:400;padding:10px 24px;border-radius:20px;cursor:pointer;display:none;z-index:200;letter-spacing:0.2px;transition:all 0.3s}
-#back-btn:active{background:rgba(255,255,255,0.18);transform:translateX(-50%) scale(0.97)}
+#back-btn{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.85);font-size:13px;font-weight:400;padding:11px 28px;border-radius:22px;cursor:pointer;display:none;z-index:200;letter-spacing:0.2px;transition:all 0.3s;white-space:nowrap}
+#back-btn:hover{background:rgba(255,255,255,0.16)}
+#back-btn:active{background:rgba(255,255,255,0.2);transform:translateX(-50%) scale(0.97)}
 #detail-hint{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.35);font-size:12px;pointer-events:none;z-index:100;display:none;letter-spacing:0.3px;white-space:nowrap}
+#interact-hint{position:fixed;bottom:118px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.42);font-size:12px;pointer-events:none;z-index:100;display:none;letter-spacing:0.3px;white-space:nowrap;padding:6px 14px;background:rgba(0,0,0,0.3);border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);text-align:center}
 #title-bar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:center;z-index:50;pointer-events:none}
 #gallery-title{color:rgba(255,255,255,0.8);font-size:16px;font-weight:400;letter-spacing:1px}
-#count-badge{position:fixed;top:18px;right:20px;color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:1px;z-index:50;font-weight:300}
+#count-badge{position:fixed;top:18px;right:20px;color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:1px;z-index:50;font-weight:300;pointer-events:none}
 </style>
 </head>
 <body>
@@ -58,7 +61,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0a;font-family:
     <div id="hint">双指滑动旋转空间</div>
     <div id="count-badge">5 works</div>
   </div>
-  <div id="detail-hint">双指捏合退出</div>
+  <div id="interact-hint"></div>
+  <div id="detail-hint">双指捏合 / 点击返回 退出</div>
   <button id="back-btn">← 返回</button>
 </div>
 
@@ -82,18 +86,23 @@ const positions=[
 
 let rotX=0,rotY=0,velX=0,velY=0;
 let detailMode=false,detailIdx=-1;
-let touches=[],lastTouchDist=0,prevTouchCX=0,prevTouchCY=0;
-let animFrame;
+let animFrame=null;
 const frames=[];
+
+/* touch state */
+let touches=[],lastTouchDist=0,prevTouchCX=0,prevTouchCY=0;
+/* mouse state */
+let mouseDown=false,lastMouseX=0,lastMouseY=0;
 
 const canvas=document.getElementById('canvas');
 const hint=document.getElementById('hint');
 const backBtn=document.getElementById('back-btn');
 const detailHint=document.getElementById('detail-hint');
+const interactHint=document.getElementById('interact-hint');
 const splash=document.getElementById('splash');
 const main=document.getElementById('main');
-const pulse=document.getElementById('pulse');
 
+/* ---------- ENTER ---------- */
 document.getElementById('enterBtn').addEventListener('click',()=>{
   splash.classList.add('out');
   document.getElementById('pulse').style.display='none';
@@ -106,27 +115,33 @@ document.getElementById('enterBtn').addEventListener('click',()=>{
   },800);
 });
 
+/* ---------- PROJECT ---------- */
 function project(px,py,pz){
   const sinX=Math.sin(rotX),cosX=Math.cos(rotX),sinY=Math.sin(rotY),cosY=Math.cos(rotY);
   let x=px,y=py,z=pz;
-  let ny=y*cosX-z*sinX,nz=y*sinX+z*cosX;y=ny;z=nz;
-  let nx=x*cosY+z*sinY,nz2=-x*sinY+z*cosY;x=nx;z=nz2;
-  const fov=600,scale=fov/(fov+z);
-  return{sx:window.innerWidth/2+x*scale,sy:window.innerHeight/2+y*scale,scale,z};
+  let ny=y*cosX-z*sinX,nz=y*sinX+z*cosX; y=ny; z=nz;
+  let nx=x*cosY+z*sinY,nz2=-x*sinY+z*cosY; x=nx; z=nz2;
+  const fov=600,sc=fov/(fov+z);
+  return{sx:window.innerWidth/2+x*sc,sy:window.innerHeight/2+y*sc,scale:sc,z};
 }
 
+/* ---------- RENDER ---------- */
 function render(){
   if(detailMode)return;
   const cx=window.innerWidth/2,cy=window.innerHeight/2;
-  let proj=frames.map((f,i)=>{const pr=project(positions[i].x,positions[i].y,positions[i].z);return{i,pr};});
+  const proj=frames.map((f,i)=>{const pr=project(positions[i].x,positions[i].y,positions[i].z);return{i,pr};});
   proj.sort((a,b)=>b.pr.z-a.pr.z);
   let closest=-1,closestDist=9999;
-  proj.forEach(({i,pr})=>{const d=Math.sqrt((pr.sx-cx)**2+(pr.sy-cy)**2);if(d<closestDist){closestDist=d;closest=i;}});
+  proj.forEach(({i,pr})=>{
+    const d=Math.hypot(pr.sx-cx,pr.sy-cy);
+    if(d<closestDist){closestDist=d;closest=i;}
+  });
   proj.forEach(({i,pr})=>{
     const f=frames[i],sc=pr.scale*0.9;
     const isClose=(i===closest&&closestDist<140);
     f.el.style.transform=`translate(${pr.sx-IMGS[i].w*sc/2}px,${pr.sy-IMGS[i].h*sc/2}px) scale(${sc})`;
-    f.el.style.width=IMGS[i].w+'px';f.el.style.height=IMGS[i].h+'px';
+    f.el.style.width=IMGS[i].w+'px';
+    f.el.style.height=IMGS[i].h+'px';
     f.el.style.filter=isClose?'brightness(1)':'blur(1.5px) brightness(0.55)';
     f.el.style.opacity=isClose?'1':'0.65';
     f.el.style.zIndex=Math.round(1000-pr.z);
@@ -135,76 +150,124 @@ function render(){
   });
 }
 
+/* ---------- ANIMATE ---------- */
 function animate(){
-  if(!detailMode){rotX+=velX;rotY+=velY;velX*=0.92;velY*=0.92;render();}
-  animFrame=requestAnimationFrame(animate);
+  if(animFrame)cancelAnimationFrame(animFrame);
+  function loop(){
+    if(!detailMode){rotX+=velX;rotY+=velY;velX*=0.92;velY*=0.92;render();}
+    animFrame=requestAnimationFrame(loop);
+  }
+  animFrame=requestAnimationFrame(loop);
 }
 
+/* ---------- ENTER DETAIL ---------- */
 function enterDetail(idx){
-  detailMode=true;detailIdx=idx;
+  detailMode=true; detailIdx=idx;
   hint.style.opacity='0';
   backBtn.style.display='block';
   detailHint.style.display='block';
   document.getElementById('gallery-title').textContent=IMGS[idx].label;
+
   frames.forEach((f,i)=>{
-    if(i!==idx){f.el.style.transition='all 0.5s cubic-bezier(0.4,0,0.2,1)';f.el.style.opacity='0';f.el.style.filter='blur(20px)';f.el.style.pointerEvents='none';}
+    f.el.style.transition='all 0.5s cubic-bezier(0.4,0,0.2,1)';
+    if(i!==idx){
+      f.el.style.opacity='0';
+      f.el.style.filter='blur(20px)';
+      f.el.style.pointerEvents='none';
+    }
   });
+
   const vw=window.innerWidth,vh=window.innerHeight;
-  const maxW=Math.min(vw-40,360),maxH=vh-140;
+  const maxW=Math.min(vw-40,360),maxH=vh-150;
   const ratio=IMGS[idx].h/IMGS[idx].w;
   let fw=maxW,fh=fw*ratio;
   if(fh>maxH){fh=maxH;fw=fh/ratio;}
+
   const f=frames[idx];
   f.el.style.transition='all 0.6s cubic-bezier(0.4,0,0.2,1)';
-  f.el.style.width=fw+'px';f.el.style.height=fh+'px';
+  f.el.style.width=fw+'px';
+  f.el.style.height=fh+'px';
   f.el.style.transform=`translate(${(vw-fw)/2}px,${(vh-fh)/2+10}px) scale(1)`;
-  f.el.style.filter='brightness(1)';f.el.style.opacity='1';f.el.style.zIndex='500';
+  f.el.style.filter='brightness(1)';
+  f.el.style.opacity='1';
+  f.el.style.zIndex='500';
   f.el.style.boxShadow='0 30px 80px rgba(0,0,0,0.7)';
   f.el.style.border='1px solid rgba(255,255,255,0.2)';
   f.el.style.pointerEvents='auto';
+
   setTimeout(()=>{
-    if(IMGS[idx].type==='animal')setupAnimalInteraction(idx,fw,fh);
-    if(IMGS[idx].type==='sketch')setupSketchInteraction(idx,fw,fh);
+    if(IMGS[idx].type==='animal'){
+      setupAnimalInteraction(idx,fw,fh);
+      interactHint.textContent='点击眼睛眨眼 · 点击耳朵抖动';
+      interactHint.style.display='block';
+    }
+    if(IMGS[idx].type==='sketch'){
+      setupSketchInteraction(idx,fw,fh);
+      interactHint.textContent='点击画面，实景涌现';
+      interactHint.style.display='block';
+    }
   },700);
 }
 
+/* ---------- EXIT DETAIL ---------- */
 function exitDetail(){
   if(!detailMode)return;
   const idx=detailIdx;
-  detailMode=false;detailIdx=-1;
-  backBtn.style.display='none';detailHint.style.display='none';
+  detailMode=false; detailIdx=-1;
+  backBtn.style.display='none';
+  detailHint.style.display='none';
+  interactHint.style.display='none';
   hint.style.opacity='1';
   document.getElementById('gallery-title').textContent='Gallery';
   removeInteractions(idx);
-  frames.forEach(f=>{f.el.style.transition='all 0.5s cubic-bezier(0.4,0,0.2,1)';f.el.style.pointerEvents='auto';});
-  velX=0;velY=0;
-  cancelAnimationFrame(animFrame);animate();
+  frames.forEach(f=>{
+    f.el.style.transition='all 0.5s cubic-bezier(0.4,0,0.2,1)';
+    f.el.style.pointerEvents='auto';
+  });
+  velX=0; velY=0;
   setTimeout(()=>{frames.forEach(f=>{f.el.style.transition='';});render();},600);
 }
 
+/* ---------- REMOVE INTERACTIONS ---------- */
 function removeInteractions(idx){
   const f=frames[idx];
   f.el.querySelectorAll('.eye-zone,.ear-zone').forEach(z=>z.remove());
   const ro=f.el.querySelector('.ripple-overlay');
-  if(ro){ro.style.transition='opacity 0.3s';ro.style.opacity='0';}
+  if(ro){
+    ro.style.transition='opacity 0.3s';
+    ro.style.opacity='0';
+    setTimeout(()=>ro.remove(),350);
+  }
+  const inner=f.el.querySelector('.frame-inner');
+  if(inner){
+    inner._rippling=false;
+    /* remove sketch click listener by cloning */
+    const clone=inner.cloneNode(true);
+    f.el.replaceChild(clone,inner);
+    frames[idx].inner=clone;
+  }
 }
 
+/* ---------- ANIMAL INTERACTION ---------- */
+const ZONES={
+  0:{eyes:[{x:0.27,y:0.35,w:0.14,h:0.1},{x:0.48,y:0.32,w:0.14,h:0.1}],ears:[{x:0.33,y:0.17,w:0.1,h:0.1},{x:0.56,y:0.14,w:0.12,h:0.1}]},
+  2:{eyes:[{x:0.42,y:0.35,w:0.18,h:0.12}],ears:[]},
+  3:{eyes:[{x:0.29,y:0.18,w:0.12,h:0.08},{x:0.52,y:0.17,w:0.12,h:0.08}],ears:[{x:0.18,y:0.05,w:0.12,h:0.1},{x:0.6,y:0.04,w:0.12,h:0.1}]},
+  4:{eyes:[{x:0.3,y:0.3,w:0.15,h:0.1},{x:0.5,y:0.3,w:0.15,h:0.1}],ears:[{x:0.25,y:0.1,w:0.12,h:0.12},{x:0.58,y:0.1,w:0.12,h:0.12}]},
+};
+
 function setupAnimalInteraction(idx,fw,fh){
+  const zones=ZONES[idx]; if(!zones)return;
   const inner=frames[idx].el.querySelector('.frame-inner');
-  let eyeZones=[],earZones=[];
-  if(idx===0){eyeZones=[{x:0.27,y:0.35,w:0.14,h:0.1},{x:0.48,y:0.32,w:0.14,h:0.1}];earZones=[{x:0.33,y:0.17,w:0.1,h:0.1},{x:0.56,y:0.14,w:0.12,h:0.1}];}
-  else if(idx===2){eyeZones=[{x:0.42,y:0.35,w:0.18,h:0.12}];earZones=[];}
-  else if(idx===3){eyeZones=[{x:0.29,y:0.18,w:0.12,h:0.08},{x:0.52,y:0.17,w:0.12,h:0.08}];earZones=[{x:0.18,y:0.05,w:0.12,h:0.1},{x:0.6,y:0.04,w:0.12,h:0.1}];}
-  else if(idx===4){eyeZones=[{x:0.3,y:0.3,w:0.15,h:0.1},{x:0.5,y:0.3,w:0.15,h:0.1}];earZones=[{x:0.25,y:0.1,w:0.12,h:0.12},{x:0.58,y:0.1,w:0.12,h:0.12}];}
-  eyeZones.forEach(z=>{
+  zones.eyes.forEach(z=>{
     const d=document.createElement('div');d.className='eye-zone';
-    d.style.cssText=`left:${z.x*fw}px;top:${z.y*fh}px;width:${z.w*fw}px;height:${z.h*fh}px;`;
-    d.addEventListener('click',e=>{e.stopPropagation();blinkEye(frames[idx].el,fw,fh,eyeZones);});
+    d.style.cssText=`left:${z.x*fw}px;top:${z.y*fh}px;width:${z.w*fw}px;height:${z.h*fh}px`;
+    d.addEventListener('click',e=>{e.stopPropagation();blinkEye(frames[idx].el,fw,fh,zones.eyes);});
     inner.appendChild(d);
   });
-  earZones.forEach(z=>{
+  zones.ears.forEach(z=>{
     const d=document.createElement('div');d.className='ear-zone';
-    d.style.cssText=`left:${z.x*fw}px;top:${z.y*fh}px;width:${z.w*fw}px;height:${z.h*fh}px;`;
+    d.style.cssText=`left:${z.x*fw}px;top:${z.y*fh}px;width:${z.w*fw}px;height:${z.h*fh}px`;
     d.addEventListener('click',e=>{e.stopPropagation();wiggleEar(frames[idx].el);});
     inner.appendChild(d);
   });
@@ -212,60 +275,85 @@ function setupAnimalInteraction(idx,fw,fh){
 
 function blinkEye(el,fw,fh,eyeZones){
   const c=document.createElement('canvas');c.width=fw;c.height=fh;
-  c.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:8;border-radius:12px;';
-  const ctx=c.getContext('2d');el.querySelector('.frame-inner').appendChild(c);
+  c.style.cssText='position:absolute;top:0;left:0;pointer-events:none;z-index:8;border-radius:12px';
+  const ctx=c.getContext('2d');
+  el.querySelector('.frame-inner').appendChild(c);
   let p=0;
   (function step(){
     ctx.clearRect(0,0,fw,fh);
     eyeZones.forEach(z=>{
       const bh=(z.h*fh)*(p<0.5?p*2:2-p*2);
-      ctx.fillStyle='rgba(170,130,90,0.96)';
-      ctx.beginPath();ctx.ellipse(z.x*fw+z.w*fw/2,z.y*fh+z.h*fh/2,z.w*fw/2,bh/2+1,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(160,120,80,0.95)';
+      ctx.beginPath();
+      ctx.ellipse(z.x*fw+z.w*fw/2,z.y*fh+z.h*fh/2,z.w*fw/2,Math.max(bh/2,0.5),0,0,Math.PI*2);
+      ctx.fill();
     });
     p+=0.08;
-    if(p<1)requestAnimationFrame(step);else{ctx.clearRect(0,0,fw,fh);setTimeout(()=>c.remove(),100);}
+    if(p<1)requestAnimationFrame(step);
+    else{ctx.clearRect(0,0,fw,fh);setTimeout(()=>c.remove(),100);}
   })();
 }
 
 function wiggleEar(el){
-  const orig=el.style.transform;const m=orig.match(/translate\(([^,]+),([^)]+)\)/);
-  if(!m)return;const tx=m[1],ty=m[2];let t=0;
+  const orig=el.style.transform;
+  const m=orig.match(/translate\(([^,]+),([^)]+)\)/);
+  if(!m)return;
+  const tx=m[1],ty=m[2]; let t=0;
   (function step(){
-    el.style.transform=`translate(${tx},${ty}) rotate(${Math.sin(t*0.7)*6*(1-t/22)}deg)`;
-    t++;if(t<22)requestAnimationFrame(step);else el.style.transform=orig;
+    const angle=Math.sin(t*0.7)*6*(1-t/22);
+    el.style.transform=`translate(${tx},${ty}) rotate(${angle}deg)`;
+    t++;
+    if(t<22)requestAnimationFrame(step);
+    else el.style.transform=orig;
   })();
 }
 
+/* ---------- SKETCH INTERACTION ---------- */
 function setupSketchInteraction(idx,fw,fh){
   const inner=frames[idx].el.querySelector('.frame-inner');
+  inner._rippling=false;
   const ov=document.createElement('div');ov.className='ripple-overlay';
-  ov.style.backgroundImage=`url('${PHOTO_SRC}')`;inner.appendChild(ov);
-  inner.addEventListener('click',e=>{
-    e.stopPropagation();if(inner._rippling)return;inner._rippling=true;
+  ov.style.backgroundImage=`url('${PHOTO_SRC}')`;
+  inner.appendChild(ov);
+
+  function handleClick(e){
+    e.stopPropagation();
+    if(inner._rippling)return;
+    inner._rippling=true;
     const rect=frames[idx].el.getBoundingClientRect();
-    const cx=(e.clientX-rect.left)/rect.width*100,cy=(e.clientY-rect.top)/rect.height*100;
-    ov.style.transition='none';ov.style.opacity='0';
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    const cx=(clientX-rect.left)/rect.width*100;
+    const cy=(clientY-rect.top)/rect.height*100;
+    ov.style.transition='none';
     ov.style.webkitMaskImage=`radial-gradient(circle at ${cx}% ${cy}%, black 0%, transparent 0%)`;
     ov.style.maskImage=`radial-gradient(circle at ${cx}% ${cy}%, black 0%, transparent 0%)`;
+    ov.style.opacity='1';
     let r=0;
     (function expand(){
       r+=2.5;
-      ov.style.webkitMaskImage=`radial-gradient(circle at ${cx}% ${cy}%, black ${r}%, black ${r+3}%, transparent ${r+10}%)`;
-      ov.style.maskImage=`radial-gradient(circle at ${cx}% ${cy}%, black ${r}%, black ${r+3}%, transparent ${r+10}%)`;
-      ov.style.opacity=String(Math.min(r/50,1));
-      if(r<170)requestAnimationFrame(expand);
+      const mask=`radial-gradient(circle at ${cx}% ${cy}%, black ${r}%, black ${r+3}%, transparent ${r+10}%)`;
+      ov.style.webkitMaskImage=mask;
+      ov.style.maskImage=mask;
+      if(r<175)requestAnimationFrame(expand);
       else{
         ov.style.webkitMaskImage='none';ov.style.maskImage='none';ov.style.opacity='1';
-        setTimeout(()=>{ov.style.transition='opacity 1s ease';ov.style.opacity='0';setTimeout(()=>{inner._rippling=false;},1100);},2000);
+        setTimeout(()=>{
+          ov.style.transition='opacity 1s ease';
+          ov.style.opacity='0';
+          setTimeout(()=>{inner._rippling=false;},1100);
+        },2000);
       }
     })();
-  });
+  }
+  inner.addEventListener('click',handleClick);
 }
 
+/* ---------- INIT FRAMES ---------- */
 function initFrames(){
   IMGS.forEach((img,i)=>{
     const el=document.createElement('div');el.className='frame';
-    el.style.cssText=`width:${img.w}px;height:${img.h}px;position:absolute;top:0;left:0;border:1px solid rgba(255,255,255,0.07);`;
+    el.style.cssText=`width:${img.w}px;height:${img.h}px;position:absolute;top:0;left:0;border:1px solid rgba(255,255,255,0.07)`;
     const inner=document.createElement('div');inner.className='frame-inner';
     const im=document.createElement('img');im.src=img.src;im.draggable=false;
     inner.appendChild(im);el.appendChild(inner);canvas.appendChild(el);
@@ -274,6 +362,7 @@ function initFrames(){
   });
 }
 
+/* ---------- TOUCH EVENTS ---------- */
 canvas.addEventListener('touchstart',e=>{
   touches=Array.from(e.touches);
   if(touches.length===2){
@@ -281,7 +370,7 @@ canvas.addEventListener('touchstart',e=>{
     prevTouchCX=(touches[0].clientX+touches[1].clientX)/2;
     prevTouchCY=(touches[0].clientY+touches[1].clientY)/2;
   }
-},{passive:false});
+},{passive:true});
 
 canvas.addEventListener('touchmove',e=>{
   e.preventDefault();
@@ -296,15 +385,32 @@ canvas.addEventListener('touchmove',e=>{
   }
   if(ts.length===2){
     const cx=(ts[0].clientX+ts[1].clientX)/2,cy=(ts[0].clientY+ts[1].clientY)/2;
-    velY+=(cx-prevTouchCX)*0.004;velX+=(cy-prevTouchCY)*0.004;
+    velY+=(cx-prevTouchCX)*0.004;
+    velX+=(cy-prevTouchCY)*0.004;
     prevTouchCX=cx;prevTouchCY=cy;
   }
   touches=ts;
 },{passive:false});
 
+/* ---------- MOUSE EVENTS (desktop) ---------- */
+canvas.addEventListener('mousedown',e=>{
+  if(detailMode)return;
+  mouseDown=true;lastMouseX=e.clientX;lastMouseY=e.clientY;
+});
+window.addEventListener('mousemove',e=>{
+  if(!mouseDown||detailMode)return;
+  velY+=(e.clientX-lastMouseX)*0.004;
+  velX+=(e.clientY-lastMouseY)*0.004;
+  lastMouseX=e.clientX;lastMouseY=e.clientY;
+});
+window.addEventListener('mouseup',()=>{mouseDown=false;});
+
+/* ---------- KEYBOARD ---------- */
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&detailMode)exitDetail();
+});
+
 backBtn.addEventListener('click',exitDetail);
 </script>
 </body>
 </html>
-HTMLEOF
-echo "done"
