@@ -1,7 +1,4 @@
 
-bash
-
-cat > /mnt/user-data/outputs/xiaolin_gallery.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="zh">
 <head>
